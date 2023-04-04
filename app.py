@@ -401,13 +401,7 @@ if geometri == geometri_list[1]:
         st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
         st.markdown(f"Diagonal = {fungsi(diagonal)}")
         st.write('## **Langkah Penyelesaian**')
-        with st.expander("Tampilkan"):
-            st.write("""
-                The chart above shows some numbers I picked for you.
-                I rolled actual dice for these, so they're *guaranteed* to
-                be random.
-            """)
-            st.image("https://static.streamlit.io/examples/dice.jpg")
+        st.write('[Coming Soon]')
 
     if bentuk == bentuk_list[2]:
         open_image("Prisma Segitiga.jpg")
