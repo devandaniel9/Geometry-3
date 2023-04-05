@@ -9,7 +9,7 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 
 # Menjalankan program
-# streamlit run 'Geometri 3 - 3.py'
+# streamlit run 'Geometri 4.py'
 
 # @import fonts/Roboto-Regular.ttf;
 
@@ -42,11 +42,6 @@ st.markdown(streamlit_style, unsafe_allow_html=True)
 def stw(text):
     return st.markdown(text, unsafe_allow_html=True)
 
-# Streamlit
-# st.write("""# Geometri 3""")
-# st.write('# :red[Program Geometri]')
-# st.markdown("# <u><font color='yellow'>Program Geometri</font></u>", unsafe_allow_html=True)
-st.markdown("# <font color='#ffd080'>Program Geometri</font>", unsafe_allow_html=True)
 st.markdown('''
 <style>
 .katex-html {
@@ -56,31 +51,43 @@ st.markdown('''
 unsafe_allow_html=True
 )
 
+# Streamlit
+# st.write("""# Geometri 3""")
+# st.write('# :red[Program Geometri]')
+# st.markdown("# <u><font color='yellow'>Program Geometri</font></u>", unsafe_allow_html=True)
+st.markdown("# <font color='#ffd080'>Program Geometri</font>", unsafe_allow_html=True)
+
 # -----
 
 # stw(color('Dibuat oleh','#ffb0a0'))
+st.write('### **Dibuat oleh Devan Daniel**')
 stw(f"**{color('Geometri','#d0ff80')}** adalah bangun yang punya sisi, luas, dan volume. Ada banyak jenis geometri dan bisa melihat gambarnya.")
 # st.text('Link')
-st.write('')
-
-st.write('## **Pengaturan**')
-with st.expander("Tampilkan"):
-    st.write('### **Satuan**')
-    satuan = st.radio('Pilih satuan', ('Tidak ada', 'Centimeter (cm)', 'Meter (m)'))
-    st.write('### **Link**')
-    st.write('Link program Bangun Datar dan Bangun Ruang:  \nhttps://devandaniel9-shape-program-devan-7zwso4.streamlit.app/')
-    st.write('### **Lanjutan**')
-    st.write('[Coming Soon]')
-    st.write('### **Tentang**')
-    st.write('Copyright © ?????')
-    st.write('Dibuat oleh Devan Daniel')
-    st.write('### **Reset**')
-    st.button('Reset Settings')
-st.write('')
-
-st.write('## **Geometri**')
 st.write('Program Geometri terdiri dari Bangun Datar, Bangun Ruang, Sudut, dan Pythagoras')
 st.write('Lebih lengkap di tab Definisi')
+st.write('')
+
+# st.write('## **Pengaturan**')
+# with st.expander("Tampilkan"):
+# st.write('## **Satuan**')
+satuan_list = ['Tidak ada', 'Centimeter (cm)', 'Meter (m)']
+# satuan = st.radio('Pilih satuan', satuan_list)
+satuan = 'Tidak ada'
+if satuan == satuan_list[0]: sat = ''
+elif satuan == satuan_list[1]: sat = 'cm'
+else: sat = 'm'
+st.write('### **Link**')
+st.write('Link program Bangun Datar dan Bangun Ruang:  \nhttps://devandaniel9-shape-program-devan-7zwso4.streamlit.app/')
+# st.write('### **Lanjutan**')
+# st.write('[Coming Soon]')
+# st.write('### **Tentang**')
+# st.write('Copyright © ?????')
+# st.write('Dibuat oleh Devan Daniel')
+# st.write('### **Reset**')
+# st.button('Reset Settings')
+st.write('')
+
+# st.write('## **Geometri**')
 check1 = st.checkbox('Hasil Gambar')
 check2 = st.checkbox('Langkah Penyelesaian')
 
@@ -133,6 +140,12 @@ def open_image(nama):
     except FileNotFoundError:
         img = ""
 
+def fsatuan(satuan, power):
+    if satuan != '':
+        if power <= 1: return f'{satuan}'
+        else: return f' {satuan}^{power}'
+    return ''
+
 if geometri == geometri_list[0]:
     st.write('**Bangun Datar** adalah bangun yang 2 dimensi dalam geometri. Terdapat satuan panjang dan lebar.')
     st.write('Luas Bangun Datar adalah melihat keseluruhan bangun datar. Sedangkan Keliling Bangun Datar adalah keliling pada pinggir bangun tersebut.')
@@ -165,9 +178,9 @@ if geometri == geometri_list[0]:
         # st.markdown(f"Luas = {fungsi(luas)}")
         # st.markdown(f"Keliling = {fungsi(keliling)}")
         # st.markdown(f"Diagonal = {fungsi(diagonal)}")
-        st.write(f"Luas = {fungsi(luas)}")
-        st.write(f"Keliling = {fungsi(keliling)}")
-        st.write(f"Diagonal = {fungsi(diagonal)}")
+        st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
+        st.write(f"Keliling = {fungsi(keliling)} {fsatuan(sat,1)}")
+        st.write(f"Diagonal = {fungsi(diagonal)} {fsatuan(sat,1)}")
 
     if bentuk == bentuk_list[1]:
         col = st.columns(2)
@@ -186,9 +199,9 @@ if geometri == geometri_list[0]:
         luas = panjang*lebar
         keliling = 2*(panjang+lebar)
         diagonal = np.sqrt(panjang**2+lebar**2)
-        st.write(f"Luas = {fungsi(luas)}")
-        st.write(f"Keliling = {fungsi(keliling)}")
-        st.write(f"Diagonal = {fungsi(diagonal)}")
+        st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
+        st.write(f"Keliling = {fungsi(keliling)} {fsatuan(sat,1)}")
+        st.write(f"Diagonal = {fungsi(diagonal)} {fsatuan(sat,1)}")
 
     if bentuk == bentuk_list[2]:
         open_image("Jajar Genjang.png")
@@ -203,7 +216,7 @@ if geometri == geometri_list[0]:
         with col1[1]: tinggi = float(st.text_input("Tinggi", value=3))
         st.write('## **Hasil Penyelesaian**')
         luas = alas*tinggi
-        st.write(f"Luas = {fungsi(luas)}")
+        st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
 
     if bentuk == bentuk_list[3]:
         open_image("Trapesium.png")
@@ -216,7 +229,7 @@ if geometri == geometri_list[0]:
         tinggi = float(st.text_input("Tinggi", value=4))
         st.write('## **Hasil Penyelesaian**')
         luas = (sisi_a+sisi_b)*tinggi/2
-        st.write(f"Luas = {fungsi(luas)}")
+        st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
 
     if bentuk == bentuk_list[4]:
         open_image("Segitiga.png")
@@ -233,7 +246,7 @@ if geometri == geometri_list[0]:
             tinggi = float(st.text_input("Tinggi", value=3))
             st.write('## **Hasil Penyelesaian**')
             luas = alas*tinggi/2
-            st.write(f"Luas = {fungsi(luas)}")
+            st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
         if bangun == bangun_list[1]:
             open_image("triangle2.png")
             st.write('### **Rumus**')
@@ -329,9 +342,9 @@ if geometri == geometri_list[0]:
         diameter = 2*radius
         luas = math.pi*radius**2
         keliling = 2*math.pi*radius
-        st.write(f"Diameter = {fungsi(diameter)}")
-        st.write(f"Luas = {fungsi(luas)}")
-        st.write(f"Keliling = {fungsi(keliling)}")
+        st.write(f"Diameter = {fungsi(diameter)} {fsatuan(sat,1)}")
+        st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
+        st.write(f"Keliling = {fungsi(keliling)} {fsatuan(sat,1)}")
 
     if bentuk == bentuk_list[7]:
         open_image("Elips.png")
@@ -346,8 +359,8 @@ if geometri == geometri_list[0]:
         st.write('## **Hasil Penyelesaian**')
         luas = math.pi*panjang*lebar/4
         keliling = math.pi*np.sqrt(panjang**2+lebar**2)
-        st.write(f"Luas = {fungsi(luas)}")
-        st.write(f"Keliling = {fungsi(keliling)}")
+        st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
+        st.write(f"Keliling = {fungsi(keliling)} {fsatuan(sat,1)}")
 
 if geometri == geometri_list[1]:
     st.write('**Bangun Ruang** adalah bangun yang 3 dimensi dalam geometri. Terdapat satuan panjang, lebar dan tinggi.')
@@ -373,9 +386,9 @@ if geometri == geometri_list[1]:
         volume = sisi**3
         luas_permukaan = 6*sisi**2
         diagonal = np.sqrt(3)*sisi
-        st.write(f"Volume = {fungsi(volume)}")
-        st.write(f"Luas Permukaan = {fungsi(luas_permukaan)}")
-        st.write(f"Diagonal = {fungsi(diagonal)}")
+        st.write(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+        st.write(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
+        st.write(f"Diagonal = {fungsi(diagonal)} {fsatuan(sat,1)}")
 
     if bentuk == bentuk_list[1]:
         open_image("Balok.png")
@@ -397,11 +410,17 @@ if geometri == geometri_list[1]:
         volume = panjang*lebar*tinggi
         luas_permukaan = 2*(panjang*lebar+panjang*tinggi+lebar*tinggi)
         diagonal = np.sqrt(panjang**2+lebar**2+tinggi**2)
-        st.markdown(f"Volume = {fungsi(volume)}")
-        st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
-        st.markdown(f"Diagonal = {fungsi(diagonal)}")
+        st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+        st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
+        st.markdown(f"Diagonal = {fungsi(diagonal)} {fsatuan(sat,1)}")
         st.write('## **Langkah Penyelesaian**')
-        st.write('[Coming Soon]')
+        with st.expander("Tampilkan"):
+            st.write("""
+                The chart above shows some numbers I picked for you.
+                I rolled actual dice for these, so they're *guaranteed* to
+                be random.
+            """)
+            st.image("https://static.streamlit.io/examples/dice.jpg")
 
     if bentuk == bentuk_list[2]:
         open_image("Prisma Segitiga.jpg")
@@ -427,7 +446,7 @@ if geometri == geometri_list[1]:
 
             st.write('## **Hasil Penyelesaian**')
             volume = 1/2*alas*tinggi*tinggi_prisma
-            st.markdown(f"Volume = {fungsi(volume)}")
+            st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
         else:
             open_image("tabung.png")
             st.write('**Tabung** bisa disebut juga dengan Prisma Lingkaran')
@@ -443,9 +462,9 @@ if geometri == geometri_list[1]:
             diameter = 2*radius
             volume = math.pi*radius**2*tinggi_prisma
             luas_permukaan = 2*math.pi*radius*(radius+tinggi_prisma)
-            st.markdown(f"Diameter = {fungsi(diameter)}")
-            st.markdown(f"Volume = {fungsi(volume)}")
-            st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
+            st.markdown(f"Diameter = {fungsi(diameter)} {fsatuan(sat,1)}")
+            st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+            st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
 
     if bentuk == bentuk_list[3]:
         open_image("Limas Segiempat.png")
@@ -466,7 +485,7 @@ if geometri == geometri_list[1]:
             with col2[0]: tinggi_limas = float(st.text_input("Tinggi Limas", value=4))
             st.write('## **Hasil Penyelesaian**')
             volume = 1/6*alas*tinggi*tinggi_limas
-            st.markdown(f"Volume = {fungsi(volume)}")
+            st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
         elif bangun == bangun_list[1]:
             open_image("Limas Segiempat.png")
             st.write('### **Rumus**')
@@ -480,8 +499,8 @@ if geometri == geometri_list[1]:
             st.write('## **Hasil Penyelesaian**')
             volume = 1/3*panjang*lebar*tinggi_limas
             luas_permukaan = panjang*lebar+panjang*np.sqrt(lebar**2/4+tinggi_limas**2)+lebar*np.sqrt(panjang**2/4+tinggi_limas**2)
-            st.markdown(f"Volume = {fungsi(volume)}")
-            st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
+            st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+            st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
         else:
             open_image("Kerucut.png")
             st.write('### **Rumus**')
@@ -494,9 +513,9 @@ if geometri == geometri_list[1]:
             diameter = 2*radius
             volume = 1/3*math.pi*radius**2*tinggi_prisma
             luas_permukaan = math.pi*radius**2+2*math.pi*radius*np.sqrt(radius**2+tinggi_prisma**2)
-            st.markdown(f"Diameter = {fungsi(diameter)}")
-            st.markdown(f"Volume = {fungsi(volume)}")
-            st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
+            st.markdown(f"Diameter = {fungsi(diameter)} {fsatuan(sat,1)}")
+            st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+            st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
 
     if bentuk == bentuk_list[4]:
         open_image("sphere.jpg")
@@ -512,9 +531,9 @@ if geometri == geometri_list[1]:
         diameter = 2*radius
         volume = 4/3*math.pi*radius**3
         luas_permukaan = 4*math.pi*radius**2
-        st.markdown(f"Diameter = {fungsi(diameter)}")
-        st.markdown(f"Volume = {fungsi(volume)}")
-        st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
+        st.markdown(f"Diameter = {fungsi(diameter)} {fsatuan(sat,1)}")
+        st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+        st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
 
     if bentuk == bentuk_list[5]:
         st.write('### **Rumus**')
@@ -529,8 +548,8 @@ if geometri == geometri_list[1]:
         st.write('## **Hasil Penyelesaian**')
         volume = 1/6*math.pi*panjang*lebar*tinggi
         luas_permukaan = math.pi*(panjang**2+lebar**2+tinggi**2)
-        st.markdown(f"Volume = {fungsi(volume)}")
-        st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)}")
+        st.markdown(f"Volume = {fungsi(volume)} {fsatuan(sat,3)}")
+        st.markdown(f"Luas Permukaan = {fungsi(luas_permukaan)} {fsatuan(sat,2)}")
 
 if geometri == geometri_list[2]:
     bentuk_list = ["Sudut Penyiku", "Sudut Pelurus", "Sudut 360 derajat"]
@@ -626,6 +645,7 @@ if geometri == geometri_list[4]:
     st.write('## **Definisi dan Penjelasan**')
 
     st.write("Geometri adalah bangun yang punya sisi, luas, dan volume. Ada banyak jenis geometri dan bisa melihat gambarnya.")
+    st.write('Geometri adalah cabang matematika yang mempelajari tentang bentuk, ukuran, posisi, dan sifat-sifat ruang. Dalam geometri, kita mempelajari tentang objek-objek seperti titik, garis, bidang, sudut, dan bangun ruang seperti kubus, bola, dan prisma. Geometri juga melibatkan penggunaan konsep matematika seperti koordinat, persamaan, dan transformasi untuk memahami dan menganalisis objek-objek geometris. Geometri sangat penting di banyak bidang, termasuk fisika, arsitektur, teknik, dan ilmu komputer.')
     st.write("Luas dan Keliling")
     st.write('Bilangan pi (π) kira-kira 3.14 atau 22/7. Konstanta pi (π) = 3.14159... Bilangan pi adalah bilangan irasional, juga bilangan ?????. Ia juga termasuk')
 
