@@ -9,9 +9,14 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 
 # Menjalankan program
-# streamlit run 'Geometri 4.py'
+# streamlit run 'Geometri 4 - 1.py'
 
 # @import fonts/Roboto-Regular.ttf;
+
+st.set_page_config(
+    page_title="Geometri 4",
+    page_icon="🧊",
+)
 
 aaa = """
 	<style>
@@ -28,7 +33,7 @@ streamlit_style = """
 	@import fonts;
 
 	[class*="css"]  {
-	font-family: 'roboto';
+	font-family: 'FreeSans';
 	}
 	</style>
 """
@@ -51,45 +56,124 @@ st.markdown('''
 unsafe_allow_html=True
 )
 
+# Buka gambar
+# oi = open image
+def open_image(nama):
+    try:
+        img2 = Image.open(f'images/{nama}')
+        wid, hgt = img2.size
+        # im = Image.new('RGB', (resolution,resolution))
+        img = Image.new('RGB', size=(wid,hgt), color='white')
+        draw = ImageDraw.Draw(img)
+        # img = Image.open(f"{bentuk}.png")
+        img.paste(img2)
+        # st.image(img, width=200)
+        st.image(img, width=320)
+    except FileNotFoundError:
+        img = ""
+
 # Streamlit
 # st.write("""# Geometri 3""")
 # st.write('# :red[Program Geometri]')
 # st.markdown("# <u><font color='yellow'>Program Geometri</font></u>", unsafe_allow_html=True)
-st.markdown("# <font color='#ffd080'>Program Geometri</font>", unsafe_allow_html=True)
+st.markdown("# <font color='#ffd080'>Program Geometri</font> 🧊", unsafe_allow_html=True)
 
 # -----
 
 # stw(color('Dibuat oleh','#ffb0a0'))
-st.write('### **Dibuat oleh Devan Daniel**')
+# st.write('#### **Dibuat oleh Devan Daniel - Kelas 9**')
+
+# open_image("geometry.jpg", 700)
+
+st.write('**Made by Devan Daniel - Kelas 9**')
+st.write('')
 stw(f"**{color('Geometri','#d0ff80')}** adalah bangun yang punya sisi, luas, dan volume. Ada banyak jenis geometri dan bisa melihat gambarnya.")
 # st.text('Link')
-st.write('Program Geometri terdiri dari Bangun Datar, Bangun Ruang, Sudut, dan Pythagoras')
-st.write('Lebih lengkap di tab Definisi')
+st.markdown('''
+Ada beberapa fitur di program ini, yaitu:
+- Program Geometri terdiri dari Bangun Datar, Bangun Ruang, Sudut, dan Pythagoras
+- Program ini dapat menampilkan langkah penyelesaian dan grafik solusi dari soal
+- Silahkan masukkan jenis persamaan dan input di menu bawah
+- Agar bisa melihat informasi, klik tombol informasi program ini
+
+Version: 1.4<br>
+Last updated: ?????
+
+<style>
+.myDiv {
+  background-color: #204884;
+  padding: 10px;
+}
+</style>
+<div class="myDiv">
+<font size=4><b>Link:</b></font>
+<br>
+Link website saya:<br>
+<a href=https://devandaniel9.github.io/index.html>Website Saya</a><br>
+Link program geometri:<br>
+<a href=https://devandaniel9-equation-solver-4.streamlit.app/>Equation Solver</a><br>
+Link bangun datar dan bangun ruang: (Program Lama)<br>
+<a href=https://devandaniel9-shape-program-devan-7zwso4.streamlit.app/>Bangun Datar dan Bangun Ruang</a>
+</div><br>
+''', unsafe_allow_html=True)
+
+def add_bg_from_local(image_file):
+    import base64
+    with open(image_file, "rb") as image_file:
+        encoded_string = base64.b64encode(image_file.read())
+    st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url(data:image/{"png"};base64,{encoded_string.decode()});
+        background-size: cover
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+    )
+# add_bg_from_local('background.jpg')
+
+st.write('## **Pengaturan**')
+with st.expander("Tampilkan"):
+    st.write('### **Satuan**')
+    satuan_list = ['Tidak ada', 'Centimeter (cm)', 'Meter (m)']
+    satuan = st.radio('Pilih satuan', satuan_list)
+    # satuan = 'Tidak ada'
+    if satuan == satuan_list[0]: sat = ''
+    elif satuan == satuan_list[1]: sat = 'cm'
+    else: sat = 'm'
+    st.write('')
+
+    st.write('### **Digit Precision**')
+    digit = int(st.slider("Digit (2-10)", value=3, min_value=2, max_value=10))
+    st.write('')
+
+    st.write('### **Langkah Penyelesaian**')
+    st.write('Langkah Penyelesaian bertujuan untuk menjelaskan bagaimana cara menyelesaikan soal-soal dengan langkah-langkah di bawahnya.')
+    step = st.checkbox('Langkah Penyelesaian (Coming Soon)')
+    if step:
+        step2 = '''step_list = ['Tidak ada penjelasan', 'Dengan penjelasan']
+        step = st.radio('Pilih opsi', step_list)
+        step_check'''
+        step2 = st.checkbox(label="Dengan penjelasan (Coming Soon)", value=True)
+    st.write('')
+
+    st.write('### **Hasil Gambar**')
+    check1 = st.checkbox('Hasil Gambar')
+    st.write('')
+
+    # st.write('### **Lanjutan**')
+    # st.write('[Coming Soon]')
+    st.write('### **Reset**')
+    st.write('Reset Settings untuk mengembalikan pengaturan ke semula')
+    reset = st.button('Reset Settings', key='RunBtn', on_click=None)
+    #if reset:
+
+
 st.write('')
 
-# st.write('## **Pengaturan**')
-# with st.expander("Tampilkan"):
-# st.write('## **Satuan**')
-satuan_list = ['Tidak ada', 'Centimeter (cm)', 'Meter (m)']
-# satuan = st.radio('Pilih satuan', satuan_list)
-satuan = 'Tidak ada'
-if satuan == satuan_list[0]: sat = ''
-elif satuan == satuan_list[1]: sat = 'cm'
-else: sat = 'm'
-st.write('### **Link**')
-st.write('Link program Bangun Datar dan Bangun Ruang:  \nhttps://devandaniel9-shape-program-devan-7zwso4.streamlit.app/')
-# st.write('### **Lanjutan**')
-# st.write('[Coming Soon]')
-# st.write('### **Tentang**')
-# st.write('Copyright © ?????')
-# st.write('Dibuat oleh Devan Daniel')
-# st.write('### **Reset**')
-# st.button('Reset Settings')
-st.write('')
-
-# st.write('## **Geometri**')
-check1 = st.checkbox('Hasil Gambar')
-check2 = st.checkbox('Langkah Penyelesaian')
+st.write('## **Jenis Geometri**')
 
 if check1:
     resolution = 1000
@@ -113,11 +197,11 @@ if check1:
         # return ImageFont.truetype("ariblk.ttf", size=size, encoding='utf-32')
         return ImageFont.truetype(f"fonts/{font}", size=size)
 
-st.write('')
+# st.write('')
 geometri_list = ["Bangun Datar", "Bangun Ruang", "Sudut", "Pythagoras", "Definisi"]
 geometri = st.selectbox("Pilih jenis Geometri:", geometri_list)
 
-digit = 3
+# digit = 3
 def fungsi(angka):
     a = round(angka, digit)
     if round(angka, digit) == round(angka, 0):
@@ -129,17 +213,6 @@ def fungsi(angka):
 
 # print(fungsi(3.99999999))
 
-# oi = open image
-
-def open_image(nama):
-    try:
-        # img = Image.open(f"{bentuk}.png")
-        img = Image.open(f'images/{nama}')
-        # st.image(img, width=200)
-        st.image(img, width=300)
-    except FileNotFoundError:
-        img = ""
-
 def fsatuan(satuan, power):
     if satuan != '':
         if power <= 1: return f'{satuan}'
@@ -147,7 +220,9 @@ def fsatuan(satuan, power):
     return ''
 
 if geometri == geometri_list[0]:
-    st.write('**Bangun Datar** adalah bangun yang 2 dimensi dalam geometri. Terdapat satuan panjang dan lebar.')
+    col = st.columns(2)
+    with col[0]: open_image("2d-shapes.png")
+    with col[1]: st.write('**Bangun Datar** adalah bangun yang 2 dimensi dalam geometri. Terdapat satuan panjang dan lebar.')
     st.write('Luas Bangun Datar adalah melihat keseluruhan bangun datar. Sedangkan Keliling Bangun Datar adalah keliling pada pinggir bangun tersebut.')
     st.write('Simbol Luas adalah L dan Keliling adalah K')
     st.write()
