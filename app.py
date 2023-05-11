@@ -9,7 +9,7 @@ import streamlit as st
 from PIL import Image, ImageDraw, ImageFont
 
 # Menjalankan program
-# streamlit run 'Geometri 4 - 1.py'
+# streamlit run 'Geometri 4 - 2.py'
 
 # @import fonts/Roboto-Regular.ttf;
 
@@ -96,8 +96,8 @@ Ada beberapa fitur di program ini, yaitu:
 - Silahkan masukkan jenis persamaan dan input di menu bawah
 - Agar bisa melihat informasi, klik tombol informasi program ini
 
-Version: 1.4<br>
-Last updated: ?????
+Version: 1.5<br>
+Last updated: 11 Mei 2023
 
 <style>
 .myDiv {
@@ -137,12 +137,19 @@ def add_bg_from_local(image_file):
 st.write('## **Pengaturan**')
 with st.expander("Tampilkan"):
     st.write('### **Satuan**')
-    satuan_list = ['Tidak ada', 'Centimeter (cm)', 'Meter (m)']
-    satuan = st.radio('Pilih satuan', satuan_list)
+    col = st.columns(2)
+    satuan_list = ['Tidak ada', 'Centimeter (cm)', 'Meter (m)', 'Inci (in)']
+    with col[0]: satuan = st.radio('Pilih satuan', satuan_list)
     # satuan = 'Tidak ada'
     if satuan == satuan_list[0]: sat = ''
     elif satuan == satuan_list[1]: sat = 'cm'
-    else: sat = 'm'
+    elif satuan == satuan_list[2]: sat = 'm'
+    else: sat = 'in'
+
+    if satuan != satuan_list[0]: 
+        # satuan2_list = [f'{sat}^2', f'{sat}2', f'{sat}²']
+        satuan2_list = ['cm^2', 'cm2', 'cm²', 'cm kuadrat']
+        with col[1]: satuan2 = st.radio('Pilih bentuk satuan', satuan2_list)
     st.write('')
 
     st.write('### **Digit Precision**')
@@ -198,7 +205,7 @@ if check1:
         return ImageFont.truetype(f"fonts/{font}", size=size)
 
 # st.write('')
-geometri_list = ["Bangun Datar", "Bangun Ruang", "Sudut", "Pythagoras", "Definisi"]
+geometri_list = ["Bangun Datar", "Bangun Ruang", "Sudut", "Pythagoras", "Transformasi", "Definisi"]
 geometri = st.selectbox("Pilih jenis Geometri:", geometri_list)
 
 # digit = 3
@@ -216,7 +223,16 @@ def fungsi(angka):
 def fsatuan(satuan, power):
     if satuan != '':
         if power <= 1: return f'{satuan}'
-        else: return f' {satuan}^{power}'
+        else:
+            # satuan2_list = ['cm^2', 'cm2', 'cm²']
+            if satuan2 == satuan2_list[0]: return f' {satuan}^{power}'
+            elif satuan2 == satuan2_list[1]: return f' {satuan}{power}'
+            elif satuan2 == satuan2_list[2]:
+                if power == 2: return f' {satuan}²'
+                else: return f' {satuan}³'
+            else:
+                if power == 2: return f' {satuan} kuadrat'
+                else: return f' {satuan} kubik'
     return ''
 
 if geometri == geometri_list[0]:
@@ -227,7 +243,7 @@ if geometri == geometri_list[0]:
     st.write('Simbol Luas adalah L dan Keliling adalah K')
     st.write()
 
-    bentuk_list = ["Persegi", "Persegi Panjang", "Jajar Genjang", "Trapesium", "Segitiga", "Segilima", "Lingkaran", "Elips"]
+    bentuk_list = ["Persegi", "Persegi Panjang", "Jajar Genjang", "Trapesium", "Segitiga", "Lingkaran", "Segilima", "Segienam", "Elips", "Gabungan"]
     bentuk = st.selectbox(f"Pilih jenis {geometri}:", bentuk_list)
 
     if bentuk == bentuk_list[0]:
@@ -395,12 +411,6 @@ if geometri == geometri_list[0]:
                 st.image("preview.png")
 
     if bentuk == bentuk_list[5]:
-        open_image("segilima.jpg")
-        st.write('**Segilima** atau Pentagon adalah bangun yang terdiri dari 5 sisi')
-        st.write('### **Rumus**')
-        st.write('### **Input**')
-
-    if bentuk == bentuk_list[6]:
         col = st.columns(2)
         with col[0]: open_image("Lingkaran.png")
         with col[1]:
@@ -421,7 +431,19 @@ if geometri == geometri_list[0]:
         st.write(f"Luas = {fungsi(luas)} {fsatuan(sat,2)}")
         st.write(f"Keliling = {fungsi(keliling)} {fsatuan(sat,1)}")
 
+    if bentuk == bentuk_list[6]:
+        open_image("segilima.jpg")
+        st.write('**Segilima** atau Pentagon adalah bangun yang terdiri dari 5 sisi')
+        st.write('### **Rumus**')
+        st.write('### **Input**')
+
     if bentuk == bentuk_list[7]:
+        open_image("segienam.jpg")
+        st.write('**Segienam** atau Hexagon adalah bangun yang terdiri dari 6 sisi')
+        st.write('### **Rumus**')
+        st.write('### **Input**')
+
+    if bentuk == bentuk_list[8]:
         open_image("Elips.png")
         st.write('**Elips (ellipse)** adalah lingkaran yang lonjong, dengan panjang dan lebar yang berbeda.')
         st.write('### **Rumus**')
@@ -501,9 +523,19 @@ if geometri == geometri_list[1]:
         open_image("Prisma Segitiga.jpg")
         st.write('**Prisma** adalah alas atas dan bawah yang sama. Jenis prisma adalah Prisma Segitiga, Prisma Segiempat (Kubus), dan Tabung.')
         st.write('Volume prisma sama dengan luas alas dikali tinggi prisma.')
+
+        st.write('### **Pertanyaan**')
+        with st.expander("Mengapa tidak ada Prisma Segiempat?"):
+            """
+            Seperti yang sudah tau, prisma adalah kedua alas yang sama, maka selimut prisma berbentuk persegi
+            Karena Prisma Segiempat dalam bentuk prisma alasnya segiempat atau persegi,
+            maka Prisma Segiempat disebut juga Kubus.
+            """
+
         st.write('### **Rumus Prisma**')
         st.latex(r"V_{prisma} = L_{alas} \times tinggi prisma")
         st.latex(r"V_{prisma} = L_{alas} \times t_p")
+
         bangun_list = ["Prisma Segitiga", "Tabung"]
         bangun = st.selectbox(f"Pilih jenis {bentuk}:", bangun_list)
     
@@ -717,6 +749,241 @@ if geometri == geometri_list[3]:
             st.image("preview.png")
 
 if geometri == geometri_list[4]:
+    # nama_list = ["Translation","Reflection","Dilation","Rotation","Kesebangunan","Bangun Datar"]
+    nama_list = ["Translasi","Refleksi","Dilatasi","Rotasi","Kesebangunan","Bangun Datar"]
+    nama = st.selectbox("Pilih jenis Transformasi:", nama_list)
+
+    st.write(f'### **{nama}**')
+    if nama == nama_list[0]:
+        col = st.columns(2)
+        with col[0]: open_image("translasi.png")
+        with col[1]:
+            # stw(f"<font size='5'><b>{bentuk}</b></font>")
+            st.write('**Translasi** dalam transformasi adalah blablabla.')
+            st.write('Disini akan mencari Luas dan Keliling persegi')
+
+        st.latex(r"A(x,y) \rightarrow A'(x+x_1,y+y_1)")
+        
+        col1 = st.columns(2)
+        col2 = st.columns(2)
+        with col1[0]: x = float(st.text_input("x", value=3))
+        with col1[1]: y = float(st.text_input("y", value=4))
+        with col2[0]: x1 = float(st.text_input("x1", value=2))
+        with col2[1]: y1 = float(st.text_input("y1", value=3))
+        
+        xa = x+x1
+        ya = y+y1
+        st.write('## **Hasil Penyelesaian**')
+        st.latex(fr"A({fungsi(x)},{fungsi(y)}) \rightarrow A'({fungsi(xa)},{fungsi(ya)})")
+
+    if nama == nama_list[1]:
+        st.latex(r"A(x,y) \rightarrow A'(2x_1-x,2y_1-y)")
+        col1 = st.columns(2)
+        col2 = st.columns(2)
+        with col1[0]: x = float(st.text_input("x", value=3))
+        with col1[1]: y = float(st.text_input("y", value=4))
+        with col2[0]: x1 = float(st.text_input("x1", value=2))
+        with col2[1]: y1 = float(st.text_input("y1", value=3))
+        xa = 2*x1-x
+        ya = 2*y1-y
+        st.write('## **Hasil Penyelesaian**')
+        st.latex(fr"A({fungsi(x)},{fungsi(y)}) \rightarrow A'({fungsi(xa)},{fungsi(ya)})")
+
+    if nama == nama_list[2]:
+        st.latex(r"A(x,y) \rightarrow A'(k(x-x_1)-x,k(y-y_1)-y)")
+        col1 = st.columns(2)
+        col2 = st.columns(2)
+        col3 = st.columns(2)
+        # 2,1,4,2,3
+        with col1[0]: x = float(st.text_input("x", value=2))
+        with col1[1]: y = float(st.text_input("y", value=1))
+        with col2[0]: x1 = float(st.text_input("x1", value=4))
+        with col2[1]: y1 = float(st.text_input("y1", value=2))
+        with col3[0]: k = float(st.text_input("k", value=3))
+        xa = k*(x-x1)+x1
+        ya = k*(y-y1)+y1
+        st.write('## **Hasil Penyelesaian**')
+        st.latex(fr"A({fungsi(x)},{fungsi(y)}) \rightarrow A'({fungsi(xa)},{fungsi(ya)})")
+
+    if nama == nama_list[3]:
+        col1 = st.columns(2)
+        col2 = st.columns(2)
+        with col1[0]: x = float(st.text_input("x", value=3))
+        with col1[1]: y = float(st.text_input("y", value=4))
+        with col2[0]: x1 = float(st.text_input("x1", value=2))
+        with col2[1]: y1 = float(st.text_input("y1", value=2))
+        # 0 = 90*, 1 = 270*
+        bentuk_list = ["90°", "270°"]
+        bentuk = st.selectbox(f"Sudut Rotasi", bentuk_list)
+
+        if bentuk == bentuk_list[0]:
+            st.latex(r"A(x,y) \rightarrow A'(-y+x_1+y_1,x-x_1+y_1)")
+            xa = -y+x1+y1
+            ya = x-x1+y1
+        if bentuk == bentuk_list[1]:
+            st.latex(r"A(x,y) \rightarrow A'(y+x_1-y_1,-x+x_1+y_1)")
+            xa = y+x1-y1
+            ya = -x+x1+y1
+
+        st.write('## **Hasil Penyelesaian**')
+        st.latex(fr"A({fungsi(x)},{fungsi(y)}) \rightarrow A'({fungsi(xa)},{fungsi(ya)})")
+
+    resolution = 1000
+
+    # tambah = 200
+    tambah = 0
+
+    # RGB, RGBA
+    im = Image.new('RGB', (resolution,resolution+tambah))
+    draw = ImageDraw.Draw(im, 'RGBA')
+
+    # font = ImageFont.truetype("roboto.ttf", size=50)
+
+    xb = 1
+    yb = 0
+    zoom = 0.2
+    zoom2 = 1
+
+    # x += 1e-10
+    # zoom += 1e-14
+    zoom = 1/zoom
+
+    def floor(a, b):
+        return round(a-a%b,12)
+
+    # grid = 0.2
+    grid = 10**int(floor(np.log10(zoom/2),1))
+    grid2 = 10**int(floor(np.log10(zoom2*zoom/2),1))
+    # print(grid)
+
+    x_start = xb-zoom
+    x_end = xb+zoom
+
+    y_start = yb+zoom2*zoom
+    y_end = yb-zoom2*zoom
+
+    x_check = True
+    x_check_2 = True
+    y_check = True
+    y_check_2 = True
+
+    abc = 0
+    abc2 = 0
+
+    width = 2
+
+    font_list = [
+        "arial.ttf",
+        "ariblk.ttf",
+        "Roboto-Regular.ttf",
+        "consola.ttf",
+        "FreeSans.ttf",
+        "FreeSansBold.ttf"
+    ]
+
+    font_index = 2
+    font = font_list[font_index]
+
+    def roboto(size):
+        # return ImageFont.truetype("ariblk.ttf", size=size, encoding='utf-32')
+        return ImageFont.truetype(f"fonts/{font}", size=size)
+
+    # Garis
+
+    def equation_line(y_current, fill, point=None, sign="="):
+        if point != None:
+            if a == round(resolution*(point-x_start)/(x_end-x_start)):
+                b = resolution*(y_current-y_start)/(y_end-y_start)
+                draw.ellipse((a-5, b-5, a+5, b+5), fill=fill)
+                # fill2 = (255,255,255)
+                fill2 = (128,255,128)
+                draw.text((a+5, b), f"{name_list[point_index]}({fungsi(x_current)}, {fungsi(y_current)})", fill=fill2, font=roboto(20))
+        # return y_current
+
+    def color(index):
+        # 240,120,0,60,300,180,30
+        # (0,0,255,32)
+        # daftar = [(0,0,255),(0,255,0),(255,0,0),(255,255,0),(255,0,255),(0,255,255),(255,128,0),(128,0,255),(0,255,128),(0,128,255),(128,255,0),(255,0,128)]
+        daftar = [(255,255,255),(128,128,255),(255,255,255)]
+        return daftar[index]
+
+    for a in range(resolution):
+        x_current = x_start+a*(x_end-x_start)/resolution
+        x_check = x_current <= 1e-12
+
+        if x_current+1e-12 >= floor(x_start,grid)+grid*(abc+1) and x_check_2:
+            if x_current >= -1e-12 and x_check:
+                draw.line((a,0,a,resolution), fill=(128,128,128))
+                x_check = False
+            else:
+                draw.line((a,0,a,resolution), fill=(64,64,64))
+            x_grid = round(resolution*y_start/(y_start-y_end))
+            if x_grid < 0: x_grid = 0
+            if x_grid >= resolution: x_grid = resolution
+            if fungsi(round(x_current,3)) != 0:
+                draw.text((a,x_grid+5), str(fungsi(round(x_current,3))), fill=(255,255,255), font=roboto(15))
+            abc += 1
+            x_check_2 = False
+        else:
+            x_check_2 = True
+    
+        y_current = y_start+a*(y_end-y_start)/resolution
+        # if a >= 0:
+            # print(y_current)
+
+        y_check = y_current >= -1e-12
+
+        if y_current-1e-12 <= grid2+floor(y_start,grid2)-grid2*(abc2+1) and y_check_2:
+            if y_current <= 1e-12 and y_check:
+                draw.line((0,a,resolution,a), fill=(128,128,128))
+                y_check = False
+            else:
+                draw.line((0,a,resolution,a), fill=(64,64,64))
+            y_grid = round(resolution*x_start/(x_start-x_end))
+            if y_grid < 0: y_grid = 0
+            if y_grid >= resolution: y_grid = resolution
+            if fungsi(round(y_current,3)) != 0:
+                draw.text((y_grid+5,a), str(fungsi(round(y_current,3))), fill=(255,255,255), font=roboto(15))
+            # 0.1+0.2-0.3 = 1e-15
+            # 1+2-3 = 0
+            abc2 += 1
+            y_check_2 = False
+        else:
+            y_check_2 = True
+
+    point = [[x,y],[x1,y1],[xa,ya]]
+    # name_list = ['A','B','C','D','E','F','G','H']
+    name_list = ['A','P',"A'"]
+    # point_index = 2
+
+    for point_index in range(len(point)):
+        for a in range(resolution):
+            x_current = x_start+a*(x_end-x_start)/resolution+1e-14
+            prev_y_current = y_current
+            point2 = point[point_index]
+            prev_y_current = y_current
+            y_current = point2[1]
+            # print(y_current)
+            equation_line(point2[1], color(point_index), point2[0])
+            # equation_line(point2[1], (255,255,255), point2[0])
+
+    draw.text((20,20), nama, fill='white', font=roboto(60))
+
+    if nama == nama_list[3]:
+        draw.text((20,100), f"Sudut rotasi: {bentuk}", fill='white', font=roboto(40))
+
+    im.save("preview.png")
+    st.image("preview.png", width=500)
+    # im.show()
+
+    with open("preview.png", "rb") as file:
+        btn = st.download_button(
+            label="Download Image",
+            data=file,
+            file_name="grafik.png"
+        )
+
+if geometri == geometri_list[5]:
     st.write('## **Definisi dan Penjelasan**')
 
     st.write("Geometri adalah bangun yang punya sisi, luas, dan volume. Ada banyak jenis geometri dan bisa melihat gambarnya.")
