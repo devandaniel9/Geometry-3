@@ -1,0 +1,7 @@
+satuan_list_index: 0
+satuan2_list_index: 0
+digit_default: 3
+step_check: False
+step2_check: False
+check1_default: False
+    
