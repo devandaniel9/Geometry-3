@@ -108,7 +108,7 @@ Ada beberapa fitur di program ini, yaitu:
 - Agar bisa melihat informasi, klik tombol informasi program ini
 
 Version: 1.6<br>
-Last updated: 30 Sept 2024 (Untuk dapat mengakses link ini)
+Last updated: 30 Sept 2024 (Untuk dapat mengakses link ini)<br>
 Last updated: 18 Mei 2023 (Perubahan isi program ini)
 
 <style>
